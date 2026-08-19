@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart'; // Widgets de Material Desing
+import 'package:provider/provider.dart';
 import 'package:yes_no_maybe_app/domain/entities/message.dart';
+import 'package:yes_no_maybe_app/presentation/providers/chat_provider.dart';
 import 'package:yes_no_maybe_app/presentation/widgets/chat/her_message_bubble.dart';
 import 'package:yes_no_maybe_app/presentation/widgets/chat/my_message_bubble.dart';
 import 'package:yes_no_maybe_app/presentation/widgets/shared/message_field.dart';
@@ -41,6 +43,11 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chatProvider = context
+        .watch<
+          ChatProvider
+        >(); // se reconstruye con cada notifyListeners
+
     return SafeArea(
       // evita que el contenido quede bajo el notch/camara/barra de gestos
       child: Padding(
@@ -52,32 +59,30 @@ class _ChatView extends StatelessWidget {
               // obliga al hijo a ocupar todo el alto disponible
               child: ListView.builder(
                 // construye elementos solo cuando son visibles (lazy)
-                itemCount: 100, // total de elementos (placeholder por ahora)
+
+                controller:
+                    chatProvider.chatScrollController, // ata el auto-scroll
+                itemCount: chatProvider
+                    .messageList
+                    .length, // ya no es 100 fijo
                 itemBuilder: (context, index) {
                   // se llama una vez por cada elemento visible en pantalla
-                  final isOracle = index.isEven; // alterna oraculo/usuario para probar ambas burbujas
-                  final message = Message(
-                    text: 'Mensaje de prueba $index',
-                    sender: isOracle
-                        ? MessageSender.oracle
-                        : MessageSender.user,
-                    // solo el primer mensaje del oraculo trae imagen, para probar _ImageBubble
-                    imageUrl: (isOracle && index == 0)
-                        ? 'https://yesno.wtf/assets/no/27-8befe9bcaeb66f865dd3ecdcf8821f51.gif'
-                        : null,
-                  );
-                  return isOracle
+                  final message = chatProvider
+                      .messageList[index]; // mensaje real
+
+                  return message.sender ==
+                          MessageSender.oracle
                       ? HerMessageBubble(message: message)
                       : MyMessageBubble(message: message); // en el Módulo 6 será una burbuja real
                 },
               ),
             ),
-            
+
             // dentro del Column, después del Expanded(ListView...):
             MessageField(
-              onValue: (value) {
-                debugPrint('Mensaje enviado: $value'); // placeholder — se conecta al provider en el Módulo 8
-              },
+              onValue: (value) => context
+                  .read<ChatProvider>()
+                  .sendMessage(value),
             ),
           ],
         ),
