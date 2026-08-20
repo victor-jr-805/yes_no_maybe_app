@@ -25,8 +25,7 @@ class _MessageFieldState extends State<MessageField> {
 
   @override
   void dispose() {
-    _textController
-        .dispose(); // Libera memoria del controller
+    _textController.dispose(); // Libera memoria del controller
     _focusNode.dispose(); // libera memoria del focus node
     super.dispose(); // siempre se llama al final
   }
@@ -45,18 +44,15 @@ class _MessageFieldState extends State<MessageField> {
   @override
   Widget build(BuildContext context) {
     final border = UnderlineInputBorder(
-      borderSide: const BorderSide(
-        color: Colors.transparent,
-      ),
+      borderSide: const BorderSide(color: Colors.transparent),
       borderRadius: BorderRadius.circular(20),
     );
     return TextFormField(
       controller: _textController, // el mismo controller en cada build, no uno nuevo
       focusNode: _focusNode,
-      onTapOutside: (event) => _focusNode
-          .unfocus(), // cierra teclado al tocar afuera
-      onFieldSubmitted:
-          _handleSubmit, // Enter/Done del teclado
+      onTapOutside: (event) =>
+          _focusNode.unfocus(), // cierra teclado al tocar afuera
+      onFieldSubmitted: _handleSubmit, // Enter/Done del teclado
       decoration: InputDecoration(
         hintText: 'Termina tu mensaje con un "?"',
         enabledBorder: border,

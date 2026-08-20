@@ -33,8 +33,7 @@ class ChatScreen extends StatelessWidget {
         ), // margen interno de 4px en los 4 lados
         title: const Text('Yes No Maybe'), // texto del AppBar
       ),
-      body:
-          const _ChatView(), // contenido principal, extraido a su propia clase
+      body: const _ChatView(), // contenido principal, extraido a su propia clase
     );
   }
 }
@@ -46,7 +45,9 @@ class _ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatProvider = context
-        .watch<ChatProvider>(); // se reconstruye con cada notifyListeners
+        .watch<
+          ChatProvider
+        >(); // se reconstruye con cada notifyListeners
 
     return SafeArea(
       // evita que el contenido quede bajo el notch/camara/barra de gestos
@@ -59,9 +60,11 @@ class _ChatView extends StatelessWidget {
               // obliga al hijo a ocupar todo el alto disponible
               child: ListView.builder(
                 // construye elementos solo cuando son visibles (lazy)
-                controller:
-                    chatProvider.chatScrollController, // ata el auto-scroll
-                itemCount: chatProvider.messageList.length, // ya no es 100 fijo
+                controller: chatProvider
+                    .chatScrollController, // ata el auto-scroll
+                itemCount: chatProvider
+                    .messageList
+                    .length, // ya no es 100 fijo
                 itemBuilder: (context, index) {
                   // se llama una vez por cada elemento visible en pantalla
                   final message =
@@ -75,12 +78,11 @@ class _ChatView extends StatelessWidget {
                 },
               ),
             ),
-            if (chatProvider.isOracleTyping)
-              const _TypingIndicator(), // solo aparece si está cargando
+            if (chatProvider.isOracleTyping) const _TypingIndicator(), // solo aparece si está cargando
             if (chatProvider.errorMessage != null)
               _ErrorBanner(
-                message:
-                    chatProvider.errorMessage!, // solo aparece si hay error
+                message: chatProvider
+                    .errorMessage!, // solo aparece si hay error
               ),
             // dentro del Column, después del Expanded(ListView...):
             MessageField(
@@ -100,13 +102,13 @@ class _TypingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Align(
-      alignment:
-          Alignment.centerLeft, // el oraculo "escribe" del lado izquierdo
+      alignment: Alignment
+          .centerLeft, // el oraculo "escribe" del lado izquierdo
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 4),
         child: Row(
-          mainAxisSize:
-              MainAxisSize.min, // no ocupa todo el ancho de la pantalla
+          mainAxisSize: MainAxisSize
+              .min, // no ocupa todo el ancho de la pantalla
           children: [
             SizedBox(
               width: 14,
@@ -136,7 +138,8 @@ class _ErrorBanner extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: colors.errorContainer, // color semantico de error del tema
+        color: colors
+            .errorContainer, // color semantico de error del tema
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(

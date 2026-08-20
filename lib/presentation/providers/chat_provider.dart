@@ -12,15 +12,11 @@ class ChatProvider extends ChangeNotifier {
   // en vez de tener el string suelto dentro del if.
   static const String _oracleTriggerChar = '?';
 
-  ChatProvider({ChatRepository? repository})
-    : _repository = repository ?? ChatRepository();
+  ChatProvider({ChatRepository? repository}) : _repository = repository ?? ChatRepository();
 
   // Estado real de la conversacion (reemplaza la lista de prueba del Modulo 6)
   final List<Message> messageList = [
-    Message(
-      text: 'Hola, preguntame algo que termine en "?"',
-      sender: MessageSender.oracle,
-    ),
+    Message(text: 'Hola, preguntame algo que termine en "?"', sender: MessageSender.oracle),
   ];
 
   bool isOracleTyping = false; // true mientras se espera la respuesta de la API
@@ -45,8 +41,7 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final reply = await _repository
-          .getOracleReply(); // espera la respuesta real
+      final reply = await _repository.getOracleReply(); // espera la respuesta real
       messageList.add(reply); // agrega la respuesta del oraculo
     } on ServerException catch (e) {
       errorMessage = e.message; // guarda el error para mostrarlo en la UI
@@ -74,8 +69,7 @@ class ChatProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    chatScrollController
-        .dispose(); // libera el controller cuando el provider se destruye
+    chatScrollController.dispose(); // libera el controller cuando el provider se destruye
     super.dispose();
   }
 }
