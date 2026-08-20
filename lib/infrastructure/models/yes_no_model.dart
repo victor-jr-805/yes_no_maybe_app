@@ -25,7 +25,7 @@ class YesNoModel {
   // MAPPER: convierte este modelo (infra) en una entidad Message (domain)
   Message toEntity() {
     final text = switch (answer) {
-      'yes' => 'Si',
+      'yes' => 'Sí',
       'no' => 'No',
       'maybe' => 'Tal vez',
       _ => answer, // fallback defencibo si la API algun dia cambia el valor

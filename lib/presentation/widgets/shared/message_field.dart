@@ -19,15 +19,14 @@ class _MessageFieldState extends State<MessageField> {
   @override
   void initState() {
     super.initState(); // siempre se llama primero
-    _textController =
-        TextEditingController(); // Se crea una sola vez, no en cada build
+    _textController = TextEditingController(); // Se crea una sola vez, no en cada build
     _focusNode = FocusNode();
   }
 
   @override
   void dispose() {
-    super.initState(); // siempre se llama primero
-    _textController.dispose(); // Libera memoria del controller
+    _textController
+        .dispose(); // Libera memoria del controller
     _focusNode.dispose(); // libera memoria del focus node
     super.dispose(); // siempre se llama al final
   }
@@ -36,35 +35,38 @@ class _MessageFieldState extends State<MessageField> {
     if (value.trim().isEmpty) {
       return;
     } // ignora mensajes vacios o solo espacios
-    widget.onValue(value); // Avisa al padre (mas adelante, al ChatProvider)
+    widget.onValue(
+      value,
+    ); // Avisa al padre (mas adelante, al ChatProvider)
     _textController.clear(); // Limpia la caja de texto
-    _focusNode
-        .requestFocus(); // mantiene el teclado abierto para seguir escribiendo
+    _focusNode.requestFocus(); // mantiene el teclado abierto para seguir escribiendo
   }
 
   @override
   Widget build(BuildContext context) {
     final border = UnderlineInputBorder(
-      borderSide: const BorderSide(color: Colors.transparent),
+      borderSide: const BorderSide(
+        color: Colors.transparent,
+      ),
       borderRadius: BorderRadius.circular(20),
     );
     return TextFormField(
-      controller:
-          _textController, // el mismo controller en cada build, no uno nuevo
+      controller: _textController, // el mismo controller en cada build, no uno nuevo
       focusNode: _focusNode,
-      onTapOutside: (event) =>
-          _focusNode.unfocus(), // cierra teclado al tocar afuera
-      onFieldSubmitted: _handleSubmit, // Enter/Done del teclado
+      onTapOutside: (event) => _focusNode
+          .unfocus(), // cierra teclado al tocar afuera
+      onFieldSubmitted:
+          _handleSubmit, // Enter/Done del teclado
       decoration: InputDecoration(
         hintText: 'Termina tu mensaje con un "?"',
         enabledBorder: border,
         focusedBorder: border,
         filled: true,
         suffixIcon: IconButton(
-          tooltip:
-              'Enviar mensaje', // descripcion para lectores de pantalla / hover
-          onPressed: () =>
-              _handleSubmit(_textController.text), // mismo flujo que Enter
+          tooltip: 'Enviar mensaje', // descripcion para lectores de pantalla / hover
+          onPressed: () => _handleSubmit(
+            _textController.text,
+          ), // mismo flujo que Enter
           icon: Icon(Icons.send),
         ),
       ),
