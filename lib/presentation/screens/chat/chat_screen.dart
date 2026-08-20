@@ -59,7 +59,6 @@ class _ChatView extends StatelessWidget {
               // obliga al hijo a ocupar todo el alto disponible
               child: ListView.builder(
                 // construye elementos solo cuando son visibles (lazy)
-
                 controller:
                     chatProvider.chatScrollController, // ata el auto-scroll
                 itemCount: chatProvider
@@ -77,7 +76,12 @@ class _ChatView extends StatelessWidget {
                 },
               ),
             ),
-
+            if (chatProvider.isOracleTyping)
+              const _TypingIndicator(), // solo aparece si está cargando
+            if (chatProvider.errorMessage != null)
+              _ErrorBanner(
+                message: chatProvider.errorMessage!, // solo aparece si hay error
+              ),
             // dentro del Column, después del Expanded(ListView...):
             MessageField(
               onValue: (value) => context
@@ -86,6 +90,61 @@ class _ChatView extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TypingIndicator extends StatelessWidget {
+  const _TypingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Align(
+      alignment: Alignment.centerLeft, // el oraculo "escribe" del lado izquierdo
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize
+              .min, // no ocupa todo el ancho de la pantalla
+          children: [
+            SizedBox(
+              width: 14,
+              height: 14,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ), // spinner pequeño
+            ),
+            SizedBox(width: 8),
+            Text('El oraculo esta pensando'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  final String message;
+  const _ErrorBanner({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Container(
+      width:
+          double.infinity, // ocupa todo el ancho disponible
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: colors.errorContainer, // color semantico de error del tema
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        message,
+        style: TextStyle(
+          color: colors.onErrorContainer,
+        ), // legible sobre errorContainer
       ),
     );
   }

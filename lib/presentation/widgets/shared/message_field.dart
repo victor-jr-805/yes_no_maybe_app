@@ -33,8 +33,9 @@ class _MessageFieldState extends State<MessageField> {
   }
 
   void _handleSubmit(String value) {
-    if (value.trim().isEmpty)
-      return; // ignora mensajes vacios o solo espacios
+    if (value.trim().isEmpty) {
+      return;
+    } // ignora mensajes vacios o solo espacios
     widget.onValue(
       value,
     ); // Avisa al padre (mas adelante, al ChatProvider)

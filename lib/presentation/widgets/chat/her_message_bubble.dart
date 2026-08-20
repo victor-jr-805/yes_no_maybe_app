@@ -67,8 +67,9 @@ class _ImageBubble extends StatelessWidget {
         height: 180,
         fit: BoxFit.cover, // recorta el sobrante sin deformar la imagen
         loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null)
-            return child; // Ya termino la carga
+          if (loadingProgress == null) {
+            return child;
+          } // Ya termino la carga
           return Container(
             width: size.width * 0.6,
             height: 180,
