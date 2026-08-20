@@ -3,6 +3,8 @@ import 'package:yes_no_maybe_app/config/constants/api_constants.dart';
 import 'package:yes_no_maybe_app/domain/exceptions/server_exception.dart';
 import 'package:yes_no_maybe_app/infrastructure/models/yes_no_model.dart';
 
+/// Obtiene la respuesta cruda (JSON) de la API pública yesno.wtf.
+/// No sabe nada de `Message`; eso es responsabilidad del mapper.
 class YesNoDatasource {
   final Dio _dio = Dio(
     BaseOptions(

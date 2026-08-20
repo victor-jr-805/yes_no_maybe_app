@@ -2,33 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:yes_no_maybe_app/domain/entities/message.dart';
 
 class HerMessageBubble extends StatelessWidget {
-  final Message
-  message; // el mensaje que este widget debe mostrar
-  const HerMessageBubble({
-    super.key,
-    required this.message,
-  });
+  final Message message; // el mensaje que este widget debe mostrar
+  const HerMessageBubble({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context)
         .colorScheme; // Paleta generada en el modulo 3
     return Column(
-      crossAxisAlignment: CrossAxisAlignment
-          .start, // alinea a la derecha = mensaje propio
+      crossAxisAlignment:
+          CrossAxisAlignment.start, // alinea a la derecha = mensaje propio
       children: [
         Container(
           decoration: BoxDecoration(
             color: colors.secondary, // Color distinto al de "mis" mensajes
-            borderRadius: BorderRadius.circular(
-              10,
-            ), // esquinas redondeadas
+            borderRadius: BorderRadius.circular(10), // esquinas redondeadas
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Text(
               message.text, // texto real, ya no un string de prueba fijo
               style: TextStyle(
@@ -63,7 +54,9 @@ class _ImageBubble extends StatelessWidget {
       ), // recorta la imagen en esquinas redoondeadas
       child: Image.network(
         imageUrl,
-        width: size.width * 0.6, // 60% del ancho, se adapta a cualquier tamaño de pantalla
+        width:
+            size.width *
+            0.6, // 60% del ancho, se adapta a cualquier tamaño de pantalla
         height: 180,
         fit: BoxFit.cover, // recorta el sobrante sin deformar la imagen
         loadingBuilder: (context, child, loadingProgress) {

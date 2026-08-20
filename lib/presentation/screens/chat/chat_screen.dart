@@ -21,18 +21,20 @@ class ChatScreen extends StatelessWidget {
         leading: Padding(
           // leading: widget en la esquina izquierda del AppBar
           padding: const EdgeInsets.all(4.0),
-          child: const CircleAvatar(
-            // recorta la imagen en circulo automaticamente
-            backgroundImage: NetworkImage(
-              'https://thumbs.dreamstime.com/b/mujer-joven-hermosa-31169854.jpg',
+          child: Semantics(
+            label: 'Foto del oraculo', // lo que anuncia un lector de pantalla
+            child: const CircleAvatar(
+              // recorta la imagen en circulo automaticamente
+              backgroundImage: NetworkImage(
+                'https://thumbs.dreamstime.com/b/mujer-joven-hermosa-31169854.jpg',
+              ),
             ),
           ),
         ), // margen interno de 4px en los 4 lados
-        title: const Text(
-          'Yes No Maybe',
-        ), // texto del AppBar
+        title: const Text('Yes No Maybe'), // texto del AppBar
       ),
-      body: const _ChatView(), // contenido principal, extraido a su propia clase
+      body:
+          const _ChatView(), // contenido principal, extraido a su propia clase
     );
   }
 }
@@ -44,9 +46,7 @@ class _ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatProvider = context
-        .watch<
-          ChatProvider
-        >(); // se reconstruye con cada notifyListeners
+        .watch<ChatProvider>(); // se reconstruye con cada notifyListeners
 
     return SafeArea(
       // evita que el contenido quede bajo el notch/camara/barra de gestos
@@ -61,18 +61,17 @@ class _ChatView extends StatelessWidget {
                 // construye elementos solo cuando son visibles (lazy)
                 controller:
                     chatProvider.chatScrollController, // ata el auto-scroll
-                itemCount: chatProvider
-                    .messageList
-                    .length, // ya no es 100 fijo
+                itemCount: chatProvider.messageList.length, // ya no es 100 fijo
                 itemBuilder: (context, index) {
                   // se llama una vez por cada elemento visible en pantalla
-                  final message = chatProvider
-                      .messageList[index]; // mensaje real
+                  final message =
+                      chatProvider.messageList[index]; // mensaje real
 
-                  return message.sender ==
-                          MessageSender.oracle
+                  return message.sender == MessageSender.oracle
                       ? HerMessageBubble(message: message)
-                      : MyMessageBubble(message: message); // en el Módulo 6 será una burbuja real
+                      : MyMessageBubble(
+                          message: message,
+                        ); // en el Módulo 6 será una burbuja real
                 },
               ),
             ),
@@ -80,13 +79,13 @@ class _ChatView extends StatelessWidget {
               const _TypingIndicator(), // solo aparece si está cargando
             if (chatProvider.errorMessage != null)
               _ErrorBanner(
-                message: chatProvider.errorMessage!, // solo aparece si hay error
+                message:
+                    chatProvider.errorMessage!, // solo aparece si hay error
               ),
             // dentro del Column, después del Expanded(ListView...):
             MessageField(
-              onValue: (value) => context
-                  .read<ChatProvider>()
-                  .sendMessage(value),
+              onValue: (value) =>
+                  context.read<ChatProvider>().sendMessage(value),
             ),
           ],
         ),
@@ -101,12 +100,13 @@ class _TypingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Align(
-      alignment: Alignment.centerLeft, // el oraculo "escribe" del lado izquierdo
+      alignment:
+          Alignment.centerLeft, // el oraculo "escribe" del lado izquierdo
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 4),
         child: Row(
-          mainAxisSize: MainAxisSize
-              .min, // no ocupa todo el ancho de la pantalla
+          mainAxisSize:
+              MainAxisSize.min, // no ocupa todo el ancho de la pantalla
           children: [
             SizedBox(
               width: 14,
@@ -132,8 +132,7 @@ class _ErrorBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return Container(
-      width:
-          double.infinity, // ocupa todo el ancho disponible
+      width: double.infinity, // ocupa todo el ancho disponible
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(

@@ -15,9 +15,5 @@ class Message {
   final MessageSender sender;
   final String? imageUrl;
 
-  Message({
-    required this.text,
-    required this.sender,
-    this.imageUrl,
-  });
+  Message({required this.text, required this.sender, this.imageUrl});
 }

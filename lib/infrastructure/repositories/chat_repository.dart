@@ -5,16 +5,14 @@ import 'package:yes_no_maybe_app/infrastructure/datasources/yes_no_datasource.da
 // No expone YesNoModel ni Dio, solo entidades del mominio.
 
 class ChatRepository {
-  final YesNoDatasource
-  _datasource; // fuente de datos real (o falsa, en tests)
+  final YesNoDatasource _datasource; // fuente de datos real (o falsa, en tests)
 
   ChatRepository({YesNoDatasource? datasource})
     : _datasource = datasource ?? YesNoDatasource();
   // Si no se inyecta nada, usa el datasource real por defecto
 
   Future<Message> getOracleReply() async {
-    final model = await _datasource
-        .getAnswer(); // pide el modelo crudo
+    final model = await _datasource.getAnswer(); // pide el modelo crudo
     return model.toEntity(); // devuelve la entidad ya mapeada, nunca el modelo
   }
 }

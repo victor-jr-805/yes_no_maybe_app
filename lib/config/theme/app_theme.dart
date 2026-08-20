@@ -16,14 +16,11 @@ class AppTheme {
 
   AppTheme({this.selectedColor = 0})
     : assert(
-        selectedColor >= 0 &&
-            selectedColor < _colorSeeds.length,
+        selectedColor >= 0 && selectedColor < _colorSeeds.length,
         'selectedColor debe estar entre 0 y ${_colorSeeds.length - 1}',
       );
 
   ThemeData theme() {
-    return ThemeData(
-      colorSchemeSeed: _colorSeeds[selectedColor],
-    );
+    return ThemeData(colorSchemeSeed: _colorSeeds[selectedColor]);
   }
 }
