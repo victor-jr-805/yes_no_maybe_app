@@ -1,0 +1,33 @@
+name: Deploy Web # nombre visible en la pestaña "Actions" de GitHub
+
+on:
+  push:
+    branches: [main] # se dispara en cada push a main
+
+permissions:
+  contents: write # necesario para poder empujar a la rama gh-pages
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # máquina virtual Linux que GitHub provee gratis
+
+    steps:
+      - uses: actions/checkout@v4 # clona tu repo dentro del runner
+
+      - uses: subosito/flutter-action@v2 # instala el SDK de Flutter en el runner
+        with:
+          flutter-version: "3.44.7" # misma versión que usas en tu máquina
+          channel: "stable"
+
+      - run: flutter pub get # descarga las dependencias (provider, dio, etc.)
+
+      - run: flutter test # NO despliega si algún test falla
+
+      - run: flutter build web --release --base-href /yes_no_maybe_app/
+        # --base-href debe coincidir EXACTO con el nombre de tu repo, con "/" al inicio y al final
+
+      - uses: peaceiris/actions-gh-pages@v4 # publica una carpeta como contenido de una rama
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # token automático, no hay que crear nada
+          publish_dir: ./build/web # carpeta que genera flutter build web
+          publish_branch: gh-pages # la misma rama que ya usas en tu otro proyecto
